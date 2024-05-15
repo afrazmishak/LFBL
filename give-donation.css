@@ -1,0 +1,504 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+
+:root{
+    --themeRed: #06142e;
+    --gray: #efefef;
+}
+
+html{
+    scroll-behavior: smooth;
+}
+
+button, body{
+    font-family: 'Poppins', sans-serif;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+p{
+    font-size: 14px;
+    line-height: 26px;
+}
+
+.fullcontainer{
+    width: 100%;
+}
+
+.container{
+    width: 95%;
+    margin: auto;
+}
+
+.pagetitle{
+    width: 300px;
+    border-bottom: 3px solid var(--themeRed);
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 300;
+    margin: 0 auto 50px;
+    position: relative;
+    padding: 10px 0;
+    text-transform: uppercase;
+}
+
+.pagetitle::after{
+    display: inline-block;
+    content: "";
+    height: 15px;
+    width: 15px;
+    background-color: var(--themeRed);
+    position: absolute;
+    left: calc(50% - 10px);
+    top: calc(75% - 7px);
+    transform: rotate(45deg) translate(50%, 50%);
+    border: 3px solid #fff;
+}
+
+/* Home Style*/
+header{
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    position: fixed;
+    z-index: 2;
+}
+
+header .container{
+    display: flex;
+    justify-content: space-between;
+}
+
+header .container .logo{
+    padding: 10px 0;
+    height: 75px;
+}
+
+header .container .logo img{
+    height: 50px;
+    padding-left: 10px;
+}
+
+header nav ul{
+    list-style-type: none;
+}
+
+header nav ul li{
+    display: inline-block;
+}
+
+header nav ul li a{
+    display: inline-block;
+    height: 70px;
+    line-height: 70px;
+    padding: 0 15px;
+    text-decoration: none;
+    text-transform: capitalize;
+    font-size: 16px;
+    color: #fff;
+    transition: 0.3s;
+}
+
+header nav ul li a:hover{
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+/* Donation Section*/
+section{
+    padding: 100px;
+    position: relative;
+}
+
+#donationsection .psection{
+    font-size: 16px;
+    text-align: center;
+}
+
+.donationcontainer section{
+    padding: 45px 20px 20px 5px;
+    position: relative;
+}
+
+.donationsec{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    flex-wrap: wrap;
+}
+
+.donation-image{
+    flex: 1;
+    margin-right: 40px;
+    overflow: hidden;
+}
+
+.donation-image img{
+    max-width: 100%;
+    height: auto;
+    display: block;
+    transition: 0.5s ease;
+}
+
+.donation-image img:hover{
+    transform: scale(1.2);
+}
+
+.donation-content{
+    flex: 1;
+    counter-reset: line-number;
+}
+
+.donation-content p{
+    font-size: 16px;
+    line-height: 1.5; 
+    color: #000;
+    counter-increment: line-number;
+    position: relative;
+    padding-left: 20px;
+}
+
+.donation-content p span{
+    font-weight: 600;
+}
+
+.donation-content p::before {
+    font-weight: 600;
+    content: counter(line-number) ". ";
+    position: absolute;
+    left: 0;
+}
+
+.donation-content .readmore{
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: var(--themeRed);
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+    border: 2px solid var(--themeRed);
+    border-radius: 5px;
+    transition: 0.3s ease;
+    cursor: pointer;
+}
+
+.donation-content .readmore:hover{
+    background-color: var(--gray);
+    color: var(--themeRed);
+    border: 2px solid var(--themeRed);
+}
+
+.extra-content {
+    display: none;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    counter-reset: line-number;
+}
+
+.extra-content p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000;
+    counter-increment: line-number;
+    position: relative;
+    padding-left: 20px;
+}
+
+.extra-content p::before {
+    font-weight: 600;
+    content: counter(line-number) ". ";
+    position: absolute;
+    left: 0;
+}
+
+.donation-content br {
+    margin-bottom: 20px;
+}
+
+.shrink-btn {
+    display: none;
+    padding: 10px 15px;
+    background-color: var(--themeRed);
+    color: #fff;
+    font-size: 18px;
+    text-decoration: none;
+    border: 2px solid var(--themeRed);
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.extra-content.show {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.readmore.show {
+    display: none;
+}
+
+.extra-content.show + .shrink-btn {
+    display: inline-block;
+}
+
+/* Footer Section*/
+
+footer .newslettercontainer img{
+    height: 50px;
+}
+
+footer{
+    background-color: #181818;
+    color: #7f7f7f;
+    padding: 50px 0;
+    font-size: 14px;
+}
+
+footer .container{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 50px;
+}
+
+footer .title{
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid;
+    margin-bottom: 30px;
+    padding: 0 0 5px 0;
+}
+
+footer p{
+    margin-bottom: 10px;
+}
+
+footer .linkscontainer ul{
+    list-style-type: none;
+}
+
+footer .linkscontainer ul li a{
+    text-decoration: none;
+    color: #7f7f7f;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+footer .newslettercontainer input{
+    background-color: transparent;
+    border: 1px solid #7f7f7f;
+    outline: none;
+    padding: 10px 15px;
+    width: 100%;
+    margin-top: 10px;
+    color: #ccc;
+    border-radius: 30px;
+}
+
+footer #feedbtn{
+    color: var(--gray);
+    background-color: var(--themeRed);
+    margin: 10px 0;
+    padding: 10px;
+    border: 2px solid var(--gray);
+    border-radius: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+footer #feedbtn:hover{
+    color: var(--themeRed);
+    background-color: var(--gray);
+    font-weight: 600;
+}
+
+footer .newslettercontainer .feed{
+    background-color: #000;
+    color: #e2e2e2;
+}
+
+/* Responsiveness*/
+@media screen and (max-width:1140px) {
+    .container{
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    .education .videoplayer{
+        width: 1280px;
+    }
+}
+
+@media screen and (max-width:1080px) {
+    .banner h1{
+        margin-top: 400px;
+    }
+
+    #donationsection .cards{
+        justify-content: space-around;
+        height: auto;
+    }
+
+    #donationsection .cards > div{
+        margin: 10px 0;
+    }
+}
+
+@media screen and (max-width:1024px) {
+    .banner{
+        background-position-x: 45%;
+    }
+
+    .banner h1{
+        margin-top: 400px;
+        font-size: 2.5rem;
+    }
+    
+    .programs .boxcontainer{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .banner h1 {
+        font-size: 2.2rem;
+        width: 70%;
+        margin-top: 400px;
+    }
+
+    .banner p {
+        width: 70%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header nav ul {
+        margin-top: 20px;
+    }
+
+    header nav ul li {
+        display: block;
+        margin-bottom: 10px;
+    }
+
+    header nav ul li a {
+        display: block;
+        height: auto;
+        line-height: 1;
+        padding: 10px 0;
+    }
+
+    .banner h1 {
+        font-size: 2rem;
+        width: 80%;
+        margin-top: 150px;
+    }
+
+    .banner p {
+        width: 80%;
+        font-size: 14px;
+    }
+
+    .banner button {
+        font-size: 12px;
+    }
+
+    .sectiontitle {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+    }
+
+    .education .educationcontainer {
+        width: 90%;
+    }
+
+    .programs .boxcontainer {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .banner h1 {
+        font-size: 1.8rem;
+        width: 90%;
+        margin-top: 130px;
+    }
+
+    .banner p {
+        width: 90%;
+    }
+
+    .banner button {
+        font-size: 11px;
+    }
+
+    .sectiontitle {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+
+    .education .educationcontainer {
+        width: 95%;
+    }
+
+    footer .container {
+        grid-template-columns: 1fr;
+    }
+
+    footer .title {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    header {
+        padding: 10px 0;
+    }
+
+    header .container {
+        padding: 0 10px;
+    }
+
+    .banner h1 {
+        font-size: 1.5rem;
+        width: 100%;
+        margin-top: 100px;
+        text-align: center;
+    }
+
+    .banner p {
+        width: 100%;
+        font-size: 13px;
+    }
+
+    .banner button {
+        font-size: 10px;
+        padding: 7px 10px;
+    }
+
+    .sectiontitle {
+        font-size: 1.2rem;
+    }
+
+    .education .educationcontainer {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .gallery .gallerycontainer {
+        column-count: 2;
+    }
+
+    footer .newslettercontainer input {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}

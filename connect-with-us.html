@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LFBL | Connect with Us</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --themeRed: #06142e;
+            --gray: #efefef;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(270deg, #071735, #535353);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .fullcontainer {
+            width: 100%;
+        }
+
+        header {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            position: fixed;
+            z-index: 2;
+        }
+
+        header .container {
+            width: 90%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        header .container .logo {
+            padding: 10px 0;
+            height: 75px;
+        }
+
+        header .container .logo img {
+            height: 50px;
+            padding-left: 10px;
+        }
+
+        header nav ul {
+            list-style-type: none;
+        }
+
+        header nav ul li {
+            display: inline-block;
+        }
+
+        header nav ul li a {
+            display: inline-block;
+            height: 70px;
+            line-height: 70px;
+            padding: 0 15px;
+            text-decoration: none;
+            text-transform: capitalize;
+            font-size: 16px;
+            color: #fff;
+            transition: 0.3s;
+        }
+
+        header nav ul li a:hover {
+            color: #fff;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        /* Get In Touch Section */
+        .contactcontainer {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+
+        .contactleft {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 20px;
+        }
+
+        .contactleft-title h2 {
+            font-weight: 600;
+            color: #fff;
+            font-size: 40px;
+            margin-bottom: 5px;
+        }
+
+        .contactleft-title hr {
+            border: none;
+            width: 120px;
+            height: 5px;
+            background-color: #fff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .contactinputs {
+            width: 400px;
+            height: 50px;
+            border: none;
+            outline: none;
+            padding-left: 25px;
+            color: #666;
+            border-radius: 50px;
+        }
+
+        .contactleft textarea {
+            height: 200px;
+            width: 560px;
+            padding-top: 15px;
+            border-radius: 20px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .contactinputs::placeholder {
+            color: #a9a9a9;
+        }
+
+        .contactleft button {
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            font-size: 16px;
+            color: #fff;
+            gap: 10px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(270deg, #081c42, #000000);
+            cursor: pointer;
+        }
+
+        .contactleft button:hover {
+            background: linear-gradient(270deg, rgb(16, 55, 128), #000000);
+        }
+
+        .contactleft button img {
+            height: 15px;
+        }
+
+        .contactright img {
+            width: 500px;
+        }
+
+        @media screen and (max-width: 768px) {
+            header nav {
+                display: block;
+                position: relative;
+                height: 40px;
+                width: 30px;
+                margin-top: 20px;
+            }
+
+            header nav::after,
+            header nav::before {
+                content: "";
+                height: 3px;
+                width: 30px;
+                background-color: #fff;
+                display: block;
+                position: absolute;
+                left: 5px;
+                transition: transform 0.3s ease;
+            }
+
+            header nav::after {
+                top: 20px;
+            }
+
+            header nav::before {
+                top: 10px;
+            }
+
+            header nav ul {
+                position: absolute;
+                align-items: center;
+                text-align: center;
+                top: 55px;
+                right: -400px;
+                width: 300px;
+                background-color: #061022;
+                border-radius: 5px;
+                padding: 10px;
+                transition: right 0.5s ease;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            header nav:hover ul {
+                right: -50px;
+            }
+
+            header nav ul li {
+                display: block;
+                margin-bottom: 10px;
+            }
+
+            header nav ul li a {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                color: #fff;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+            }
+
+            header nav ul li a:hover {
+                font-size: 18px;
+                color: #fff;
+            }
+
+            header .container .logo {
+                padding-bottom: 10px;
+            }
+
+            header .container .logo img {
+                height: 40px;
+                padding-top: 10px;
+            }
+
+            .contactcontainer {
+                flex-direction: column;
+                height: auto;
+                padding: 20px;
+            }
+
+            .contactleft {
+                width: 100%;
+                max-width: 400px;
+                /* Adjust based on your design */
+                margin-bottom: 20px;
+            }
+
+            .contactleft-title h2 {
+                margin-top: 70px;
+                font-size: 25px;
+                /* Adjust font size for smaller screens */
+            }
+
+            .contactinputs {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .contactleft textarea {
+                width: 100%;
+                height: 150px;
+                max-width: 100%;
+            }
+
+            .contactright {
+                width: 100%;
+                max-width: 400px;
+                /* Adjust based on your design */
+            }
+
+            .contactright img {
+                width: 100%;
+            }
+
+            .contactleft button {
+                width: 40%;
+                align-self: center;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fullcontainer banner" id="homesection">
+        <header>
+            <div class="container">
+                <div class="logo">
+                    <img src="./images/Logo Files/For Web/png/White logo - no background.png">
+                </div>
+
+                <nav>
+                    <ul>
+                        <li>
+                            <a href="./index.html">Home</a>
+                        </li>
+                        <li>
+                            <a href="./index.html#aboutsection">About Us</a>
+                        </li>
+                        <li>
+                            <a href="#programssection">Programs</a>
+                        </li>
+                        <li>
+                            <a href="Javascript:void(0);">Food Bank</a>
+                        </li>
+                        <li>
+                            <a href="./index.html#educationsection">Education</a>
+                        </li>
+                        <li>
+                            <a href="./index.html#gallerysection">Gallery</a>
+                        </li>
+                        <li>
+                            <a href="./index.html#joinsection">Donate</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+    </div>
+
+    <div class="contactcontainer">
+        <form action="https://api.web3forms.com/submit" method="POST" class="contactleft">
+            <div class="contactleft-title">
+                <h2>Connect with us</h2>
+                <hr>
+            </div>
+            <input type="hidden" name="access_key" value="c1557e86-33fe-40cb-ae81-1764bd77fb10">
+            <input type="text" name="name" placeholder="Your Name" class="contactinputs" required>
+            <input type="email" name="email" placeholder="Your Email" class="contactinputs" required>
+            <textarea name="message" placeholder="Your Message" class="contactinputs" required></textarea>
+            <button type="submit">Submit <img src="./images/arrow_icon.png" alt=""></button>
+        </form>
+        <div class="contactright">
+            <img src="/images/right_img.png">
+        </div>
+    </div>
+</body>
+
+</html>
