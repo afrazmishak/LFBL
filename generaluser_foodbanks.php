@@ -38,78 +38,12 @@ if ($result && mysqli_num_rows($result) > 0) {
     $imagelocation = "./images/default_profile.jpg";
 }
 
-$sqltwo = "SELECT * FROM foodbankdetails";
+$sqltwo = "SELECT foodbankdetails.*, volunteer_users.last_login_time
+           FROM foodbankdetails
+           LEFT JOIN volunteer_users ON foodbankdetails.volunteer_user_id = volunteer_users.id";
 $resulttwo = mysqli_query($conn, $sqltwo);
 
-// Update the latest login time for the user
-$update_query = "UPDATE general_users SET last_login_time = CURRENT_TIMESTAMP WHERE email = '$email'";
-mysqli_query($conn, $update_query);
-
-// Fetch the number of general users
-$user_count = 0;
-$query_user_count = "SELECT COUNT(*) as user_count FROM general_users";
-$result_user_count = mysqli_query($conn, $query_user_count);
-if ($result_user_count && mysqli_num_rows($result_user_count) > 0) {
-    $row_user_count = mysqli_fetch_assoc($result_user_count);
-    $user_count = $row_user_count['user_count'];
-}
-
-// Calculate the time 48 hours ago
-$last_48_hours = date('Y-m-d H:i:s', strtotime('-48 hours'));
-
-// Query to count the number of active general users within the last 48 hours
-$query_active_users = "SELECT COUNT(*) as active_user_count 
-                       FROM general_users 
-                       WHERE last_login_time >= '$last_48_hours'";
-
-$result_active_users = mysqli_query($conn, $query_active_users);
-
-$active_user_count = 0;
-
-if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
-    $row_active_users = mysqli_fetch_assoc($result_active_users);
-    $active_user_count = $row_active_users['active_user_count'];
-}
-
-// Fetch the number of foodbanks
-$volunteer_count = 0;
-$query_user_count = "SELECT COUNT(*) as user_count FROM volunteer_users";
-$result_user_count = mysqli_query($conn, $query_user_count);
-if ($result_user_count && mysqli_num_rows($result_user_count) > 0) {
-    $row_user_count = mysqli_fetch_assoc($result_user_count);
-    $volunteer_count = $row_user_count['user_count'];
-}
-
-// Query to count the number of active general users within the last 48 hours
-$query_active_users = "SELECT COUNT(*) as active_user_count 
-                       FROM volunteer_users 
-                       WHERE last_login_time >= '$last_48_hours'";
-
-$result_active_users = mysqli_query($conn, $query_active_users);
-
-$active_volunteer_count = 0;
-if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
-    $row_active_users = mysqli_fetch_assoc($result_active_users);
-    $active_volunteer_count = $row_active_users['active_user_count'];
-}
-
-// Fetch the number of donations
-$donation_count = 0;
-$query_donation_count = "SELECT COUNT(*) as donation_count FROM donations";
-$result_donation_count = mysqli_query($conn, $query_donation_count);
-if ($result_donation_count && mysqli_num_rows($result_donation_count) > 0) {
-    $row_donation_count = mysqli_fetch_assoc($result_donation_count);
-    $donation_count = $row_donation_count['donation_count'];
-}
-
-// Fetch the total amount of donations received
-$total_donations_received = 0;
-$query_total_donations = "SELECT SUM(amount) as total_amount FROM donations";
-$result_total_donations = mysqli_query($conn, $query_total_donations);
-if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
-    $row_total_donations = mysqli_fetch_assoc($result_total_donations);
-    $total_donations_received = $row_total_donations['total_amount'];
-}
+$current_time = time(); // Get the current time in Unix timestamp
 ?>
 
 <!DOCTYPE html>
@@ -402,6 +336,15 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
             color: #2b2b2b;
         }
 
+        .inactive p {
+            font-size: 15px;
+            background: #FAD8D8;
+            padding: 2px 10px;
+            display: inline-block;
+            border-radius: 40px;
+            color: #2b2b2b;
+        }
+
         .role p {
             font-size: 15px;
         }
@@ -480,6 +423,8 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
             position: fixed;
             top: 50%;
             left: 50%;
+            min-width: 500px;
+            width: auto;
             transform: translate(-50%, -50%);
             background-color: white;
             border: 1px solid black;
@@ -647,107 +592,68 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
             </div>
         </div>
 
-        <h3 class="i_name">User Dashboard</h3>
-
-        <div class="values">
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $user_count; ?></h3>
-                    <span>General Users</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $active_user_count; ?></h3>
-                    <span>Active General Users</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $volunteer_count; ?></h3>
-                    <span>Food Banks</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $active_volunteer_count; ?></h3>
-                    <span>Active Food Banks</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $donation_count ?></h3>
-                    <span>No. of Donations</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3>$<?php echo $total_donations_received; ?></h3>
-                    <span>Donations Received</span>
-                </div>
-            </div>
-        </div>
-
+        <h3 class="i_name">Food Banks</h3>
         <dir class="board">
             <table width="100%" id="dataTable">
                 <?php if (mysqli_num_rows($resulttwo) > 0) { ?>
                     <thead>
                         <tr>
                             <td>Bank</td>
-                            <td>Incharger</td>
                             <td>City</td>
                             <td>Postal Code</td>
                             <td>Contact Number</td>
+                            <td>Status</td>
                             <td></td>
                         </tr>
                     </thead>
 
                     <tbody>
                         <?php
-                        while ($row = mysqli_fetch_assoc($resulttwo)) { ?>
+                        while ($row = mysqli_fetch_assoc($resulttwo)) {
+                            $last_login_time = strtotime($row['last_login_time']); // Convert last login time to Unix timestamp
+                            $inactive_threshold = 2 * 24 * 60 * 60; // 2 days in seconds
+                    
+                            // Calculate the difference between current time and last login time
+                            $time_difference = $current_time - $last_login_time;
+
+                            // Determine the status based on the time difference
+                            if ($last_login_time !== null && $time_difference <= $inactive_threshold) {
+                                $status = 'Active';
+                            } else {
+                                $status = 'Inactive';
+                            }
+
+                            ?>
                             <tr>
                                 <td class="people">
-                                    <img src="<?php echo $row['imagelocation']; ?>">
+                                    <?php if (!empty($row['imagelocation'])) { ?>
+                                        <img src="<?php echo $row['imagelocation']; ?>">
+                                    <?php } else { ?>
+                                        <img src="./images/default_profile.jpg">
+                                    <?php } ?>
                                     <div class="people-details">
-                                        <p>
-                                            <?php echo $row['bankname']; ?>
-                                        </p>
+                                        <?php echo $row['bankname']; ?>
                                     </div>
                                 </td>
 
                                 <td class="description">
-                                    <?php echo $row['incharger']; ?>
+                                    <?php echo $row['city']; ?>
                                 </td>
 
                                 <td class="description">
-                                    <p>
-                                        <?php echo $row['city']; ?>
-                                    </p>
-                                </td>
-
-                                <td class="description">
-                                    <p>
-                                        <?php echo $row['postalcode']; ?>
-                                    </p>
+                                    <?php echo $row['postalcode']; ?>
                                 </td>
 
                                 <td class="description">
                                     <p><?php echo $row['contactnumber']; ?></p>
                                 </td>
 
+                                <td class="<?php echo strtolower($status); ?>">
+                                    <p><?php echo $status; ?></p>
+                                </td>
+
                                 <td class="edit">
-                                    <a href="" class="view-more-link">View More</a>
+                                    <a href="" class="view-more-link">View more</a>
                                     <div class="details-box">
                                         <h3><?php echo $row['bankname']; ?></h3><br>
                                         <hr>
@@ -768,7 +674,6 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
     </section>
     <div class="blur-background" id="blur-background"></div>
 </body>
-
 <script>
     $('#menu_button').click(function () {
         $('#menu').toggleClass("active");
@@ -802,10 +707,11 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
         const rows = tableBody.querySelectorAll('tr');
 
         rows.forEach(row => {
-            const city = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-            const postalCode = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+            const bank = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const city = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const postalcode = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
 
-            if (city.includes(searchValue) || postalCode.includes(searchValue)) {
+            if (bank.includes(searchValue) || city.includes(searchValue) || postalcode.includes(searchValue)) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';
@@ -856,6 +762,9 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
         blurBackground.style.display = 'none';
     }
 
+    function editUserDetails(id) {
+        window.location.href = 'organization_foodbankdetails.php?id=' + id;
+    }
 </script>
 
 </html>

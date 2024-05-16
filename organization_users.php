@@ -554,12 +554,14 @@ $current_time = time(); // Get the current time in Unix timestamp
         </div>
 
         <div class="items">
-            <li><a href="./organization_dashboard.php"><i class='bx bxs-pie-chart-alt-2'></i>Home</a></li>
+        <li><a href="./organization_dashboard.php"><i class='bx bxs-pie-chart-alt-2'></i>Home</a></li>
             <li><a href="./organization_generalusers.php"><i class='bx bxs-pie-chart-alt-2'></i>General Users</a></li>
             <li><a href="./organization_foodbanks.php"><i class='bx bxs-pie-chart-alt-2'></i>Food Banks</a></li>
             <li><a href="./organization_users.php"><i class='bx bxs-pie-chart-alt-2'></i>Users</a></li>
             <li><a href="./organization_signupusers.php"><i class='bx bxs-pie-chart-alt-2'></i>Create Users</a></li>
-            <li><a href="#"><i class='bx bxs-pie-chart-alt-2'></i>Donations History</a></li>
+            <li><a href="./organization_donationhistory.php"><i class='bx bxs-pie-chart-alt-2'></i>Donations History</a></li>
+            <li><a href="./paymentgateway.php" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Donate now</a></li>
+            <li><a href="./connect-with-us.html" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Connect with us</a></li>
         </div>
     </section>
 

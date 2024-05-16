@@ -3,25 +3,25 @@
 session_start();
 
 // Check if the user is logged in
-if (!isset($_SESSION['email'])) {
+if (!isset($_SESSION['username'])) {
     // Redirect the user to the login page if not logged in
-    header("Location: signin-signup_users.php");
+    header("Location: signin-signup_organization.php");
     exit();
 }
 
 //Include the database connection
 include ("./system/config/dbconnection.php");
 
-// Fetch the profile image URL and firstname for the logged-in user
-$email = $_SESSION['email'];
-$query = "SELECT general_users.id, general_userdetails.firstname, general_userdetails.lastname, general_userdetails.imagelocation
-FROM general_users 
-JOIN general_userdetails ON general_users.id = general_userdetails.general_user_id
-WHERE general_users.email='$email'";
+// Fetch the profile image URL for the logged-in user
+$username = $_SESSION['username'];
+$query = "SELECT organization_users.id, organization_userdetails.imagelocation, organization_userdetails.firstname, organization_userdetails.lastname
+FROM organization_users 
+JOIN organization_userdetails ON organization_users.id = organization_userdetails.organization_user_id 
+WHERE organization_users.username='$username'";
 
 $result = mysqli_query($conn, $query);
 
-// Check if the query was successful and if data was found
+// Check if the query was successful and if a profile image URL was found
 if ($result && mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
     $imagelocation = $row['imagelocation'];
@@ -38,78 +38,8 @@ if ($result && mysqli_num_rows($result) > 0) {
     $imagelocation = "./images/default_profile.jpg";
 }
 
-$sqltwo = "SELECT * FROM foodbankdetails";
+$sqltwo = "SELECT * FROM donations";
 $resulttwo = mysqli_query($conn, $sqltwo);
-
-// Update the latest login time for the user
-$update_query = "UPDATE general_users SET last_login_time = CURRENT_TIMESTAMP WHERE email = '$email'";
-mysqli_query($conn, $update_query);
-
-// Fetch the number of general users
-$user_count = 0;
-$query_user_count = "SELECT COUNT(*) as user_count FROM general_users";
-$result_user_count = mysqli_query($conn, $query_user_count);
-if ($result_user_count && mysqli_num_rows($result_user_count) > 0) {
-    $row_user_count = mysqli_fetch_assoc($result_user_count);
-    $user_count = $row_user_count['user_count'];
-}
-
-// Calculate the time 48 hours ago
-$last_48_hours = date('Y-m-d H:i:s', strtotime('-48 hours'));
-
-// Query to count the number of active general users within the last 48 hours
-$query_active_users = "SELECT COUNT(*) as active_user_count 
-                       FROM general_users 
-                       WHERE last_login_time >= '$last_48_hours'";
-
-$result_active_users = mysqli_query($conn, $query_active_users);
-
-$active_user_count = 0;
-
-if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
-    $row_active_users = mysqli_fetch_assoc($result_active_users);
-    $active_user_count = $row_active_users['active_user_count'];
-}
-
-// Fetch the number of foodbanks
-$volunteer_count = 0;
-$query_user_count = "SELECT COUNT(*) as user_count FROM volunteer_users";
-$result_user_count = mysqli_query($conn, $query_user_count);
-if ($result_user_count && mysqli_num_rows($result_user_count) > 0) {
-    $row_user_count = mysqli_fetch_assoc($result_user_count);
-    $volunteer_count = $row_user_count['user_count'];
-}
-
-// Query to count the number of active general users within the last 48 hours
-$query_active_users = "SELECT COUNT(*) as active_user_count 
-                       FROM volunteer_users 
-                       WHERE last_login_time >= '$last_48_hours'";
-
-$result_active_users = mysqli_query($conn, $query_active_users);
-
-$active_volunteer_count = 0;
-if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
-    $row_active_users = mysqli_fetch_assoc($result_active_users);
-    $active_volunteer_count = $row_active_users['active_user_count'];
-}
-
-// Fetch the number of donations
-$donation_count = 0;
-$query_donation_count = "SELECT COUNT(*) as donation_count FROM donations";
-$result_donation_count = mysqli_query($conn, $query_donation_count);
-if ($result_donation_count && mysqli_num_rows($result_donation_count) > 0) {
-    $row_donation_count = mysqli_fetch_assoc($result_donation_count);
-    $donation_count = $row_donation_count['donation_count'];
-}
-
-// Fetch the total amount of donations received
-$total_donations_received = 0;
-$query_total_donations = "SELECT SUM(amount) as total_amount FROM donations";
-$result_total_donations = mysqli_query($conn, $query_total_donations);
-if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
-    $row_total_donations = mysqli_fetch_assoc($result_total_donations);
-    $total_donations_received = $row_total_donations['total_amount'];
-}
 ?>
 
 <!DOCTYPE html>
@@ -402,6 +332,15 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
             color: #2b2b2b;
         }
 
+        .inactive p {
+            font-size: 15px;
+            background: #FAD8D8;
+            padding: 2px 10px;
+            display: inline-block;
+            border-radius: 40px;
+            color: #2b2b2b;
+        }
+
         .role p {
             font-size: 15px;
         }
@@ -480,6 +419,8 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
             position: fixed;
             top: 50%;
             left: 50%;
+            min-width: 500px;
+            width: auto;
             transform: translate(-50%, -50%);
             background-color: white;
             border: 1px solid black;
@@ -607,8 +548,13 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
         </div>
 
         <div class="items">
-            <li><a href="./generaluser_dashboard.php"><i class='bx bxs-pie-chart-alt-2'></i>Home</a></li>
-            <li><a href="./generaluser_foodbanks.php"><i class='bx bxs-pie-chart-alt-2'></i>Food Banks</a></li>
+            <li><a href="./organization_dashboard.php"><i class='bx bxs-pie-chart-alt-2'></i>Home</a></li>
+            <li><a href="./organization_generalusers.php"><i class='bx bxs-pie-chart-alt-2'></i>General Users</a></li>
+            <li><a href="./organization_foodbanks.php"><i class='bx bxs-pie-chart-alt-2'></i>Food Banks</a></li>
+            <li><a href="./organization_users.php"><i class='bx bxs-pie-chart-alt-2'></i>Users</a></li>
+            <li><a href="./organization_signupusers.php"><i class='bx bxs-pie-chart-alt-2'></i>Create Users</a></li>
+            <li><a href="./organization_donationhistory.php"><i class='bx bxs-pie-chart-alt-2'></i>Donations History</a>
+            </li>
             <li><a href="./paymentgateway.php" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Donate now</a></li>
             <li><a href="./connect-with-us.html" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Connect with
                     us</a></li>
@@ -641,121 +587,66 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
                 <?php if (isset($fullname) && !empty($fullname)): ?>
                     <p><?php echo $fullname; ?></p>
                 <?php endif; ?>
-                <a href="./generaluserdetails.php" id="edit_profile">Edit Profile</a>
+                <a href="./organizationuserdetails.php" id="edit_profile">Edit Profile</a>
                 <a href="#" id="change_password">Change Password</a>
-                <a href="./logout_users.php" id="logout">Logout</a>
+                <a href="./logout_organization.php" id="logout">Logout</a>
             </div>
         </div>
 
-        <h3 class="i_name">User Dashboard</h3>
-
-        <div class="values">
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $user_count; ?></h3>
-                    <span>General Users</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $active_user_count; ?></h3>
-                    <span>Active General Users</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $volunteer_count; ?></h3>
-                    <span>Food Banks</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $active_volunteer_count; ?></h3>
-                    <span>Active Food Banks</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3><?php echo $donation_count ?></h3>
-                    <span>No. of Donations</span>
-                </div>
-            </div>
-
-            <div class="value_box">
-                <i class='bx bxs-user-detail'></i>
-                <div>
-                    <h3>$<?php echo $total_donations_received; ?></h3>
-                    <span>Donations Received</span>
-                </div>
-            </div>
-        </div>
-
+        <h3 class="i_name">Food Banks</h3>
         <dir class="board">
             <table width="100%" id="dataTable">
                 <?php if (mysqli_num_rows($resulttwo) > 0) { ?>
                     <thead>
                         <tr>
-                            <td>Bank</td>
-                            <td>Incharger</td>
-                            <td>City</td>
-                            <td>Postal Code</td>
-                            <td>Contact Number</td>
+                            <td>ID</td>
+                            <td>Amount</td>
+                            <td>Card Holder</td>
+                            <td>Payment Time</td>
                             <td></td>
                         </tr>
                     </thead>
 
                     <tbody>
                         <?php
-                        while ($row = mysqli_fetch_assoc($resulttwo)) { ?>
+                        while ($row = mysqli_fetch_assoc($resulttwo)) {
+                            ?>
                             <tr>
                                 <td class="people">
-                                    <img src="<?php echo $row['imagelocation']; ?>">
+                                    <?php if (!empty($row['imagelocation'])) { ?>
+                                        <img src="<?php echo $row['imagelocation']; ?>">
+                                    <?php } else { ?>
+                                        <img src="./images/default_profile.jpg">
+                                    <?php } ?>
                                     <div class="people-details">
-                                        <p>
-                                            <?php echo $row['bankname']; ?>
-                                        </p>
+                                        <?php echo $row['id']; ?>
                                     </div>
                                 </td>
 
                                 <td class="description">
-                                    <?php echo $row['incharger']; ?>
+                                    $<?php echo $row['amount']; ?>
                                 </td>
 
                                 <td class="description">
-                                    <p>
-                                        <?php echo $row['city']; ?>
-                                    </p>
+                                    <?php echo $row['card_holder']; ?>
                                 </td>
 
                                 <td class="description">
-                                    <p>
-                                        <?php echo $row['postalcode']; ?>
-                                    </p>
-                                </td>
-
-                                <td class="description">
-                                    <p><?php echo $row['contactnumber']; ?></p>
+                                    <p><?php echo $row['payment_time']; ?></p>
                                 </td>
 
                                 <td class="edit">
-                                    <a href="" class="view-more-link">View More</a>
+                                    <a href="" class="view-more-link">View more</a>
                                     <div class="details-box">
-                                        <h3><?php echo $row['bankname']; ?></h3><br>
+                                        <h3><?php echo $row['id']; ?></h3><br>
                                         <hr>
-                                        <p>Incharger: <?php echo $row['incharger']; ?></p>
-                                        <p>Contact Number: <?php echo $row['contactnumber']; ?></p>
-                                        <p>Location: <?php echo $row['location_address']; ?></p>
-                                        <p>City: <?php echo $row['city']; ?></p>
-                                        <p>Postal Code: <?php echo $row['postalcode']; ?></p>
+                                        <p>Payment amount: <?php echo $row['amount']; ?></p>
+                                        <p>Card Number: <?php echo $row['card_number']; ?></p>
+                                        <p>Card Holder: <?php echo $row['card_holder']; ?></p>
+                                        <p>Card Expiration Month: <?php echo $row['expiration_month']; ?></p>
+                                        <p>Card Expiration Year: <?php echo $row['expiration_year']; ?></p>
+                                        <p>Card Expiration CCV: <?php echo $row['cvv']; ?></p>
+                                        <p>Payment Time: <?php echo $row['payment_time']; ?></p>
                                         <button type="button" onclick="closePopup();">Close</button>
                                     </div>
                                 </td>
@@ -768,7 +659,6 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
     </section>
     <div class="blur-background" id="blur-background"></div>
 </body>
-
 <script>
     $('#menu_button').click(function () {
         $('#menu').toggleClass("active");
@@ -802,10 +692,11 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
         const rows = tableBody.querySelectorAll('tr');
 
         rows.forEach(row => {
-            const city = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-            const postalCode = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+            const bank = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const city = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const postalcode = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
 
-            if (city.includes(searchValue) || postalCode.includes(searchValue)) {
+            if (bank.includes(searchValue) || city.includes(searchValue) || postalcode.includes(searchValue)) {
                 row.style.display = '';
             } else {
                 row.style.display = 'none';
@@ -856,6 +747,9 @@ if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
         blurBackground.style.display = 'none';
     }
 
+    function editUserDetails(id) {
+        window.location.href = 'organization_foodbankdetails.php?id=' + id;
+    }
 </script>
 
 </html>

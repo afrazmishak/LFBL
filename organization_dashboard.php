@@ -42,6 +42,9 @@ if ($result && mysqli_num_rows($result) > 0) {
 $update_query = "UPDATE organization_users SET last_login_time = CURRENT_TIMESTAMP WHERE username = '$username'";
 mysqli_query($conn, $update_query);
 
+// Calculate the time 48 hours ago
+$last_48_hours = date('Y-m-d H:i:s', strtotime('-48 hours'));
+
 // Fetch the number of general users
 $user_count = 0;
 $query_user_count = "SELECT COUNT(*) as user_count FROM general_users";
@@ -51,9 +54,6 @@ if ($result_user_count && mysqli_num_rows($result_user_count) > 0) {
     $user_count = $row_user_count['user_count'];
 }
 
-// Calculate the time 48 hours ago
-$last_48_hours = date('Y-m-d H:i:s', strtotime('-48 hours'));
-
 // Query to count the number of active general users within the last 48 hours
 $query_active_users = "SELECT COUNT(*) as active_user_count 
                        FROM general_users 
@@ -62,7 +62,6 @@ $query_active_users = "SELECT COUNT(*) as active_user_count
 $result_active_users = mysqli_query($conn, $query_active_users);
 
 $active_user_count = 0;
-
 if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
     $row_active_users = mysqli_fetch_assoc($result_active_users);
     $active_user_count = $row_active_users['active_user_count'];
@@ -85,10 +84,27 @@ $query_active_users = "SELECT COUNT(*) as active_user_count
 $result_active_users = mysqli_query($conn, $query_active_users);
 
 $active_volunteer_count = 0;
-
 if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
     $row_active_users = mysqli_fetch_assoc($result_active_users);
     $active_volunteer_count = $row_active_users['active_user_count'];
+}
+
+// Fetch the number of donations
+$donation_count = 0;
+$query_donation_count = "SELECT COUNT(*) as donation_count FROM donations";
+$result_donation_count = mysqli_query($conn, $query_donation_count);
+if ($result_donation_count && mysqli_num_rows($result_donation_count) > 0) {
+    $row_donation_count = mysqli_fetch_assoc($result_donation_count);
+    $donation_count = $row_donation_count['donation_count'];
+}
+
+// Fetch the total amount of donations received
+$total_donations_received = 0;
+$query_total_donations = "SELECT SUM(amount) as total_amount FROM donations";
+$result_total_donations = mysqli_query($conn, $query_total_donations);
+if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
+    $row_total_donations = mysqli_fetch_assoc($result_total_donations);
+    $total_donations_received = $row_total_donations['total_amount'];
 }
 ?>
 
@@ -456,6 +472,38 @@ if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
             color: red;
         }
 
+        .decorative-container {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 30px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .decorative-container h2 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .decorative-container p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .decorative-container ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        .decorative-container li {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+
         @media (max-width: 768px) {
             #menu {
                 width: 270px;
@@ -523,9 +571,11 @@ if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
             <li><a href="./organization_foodbanks.php"><i class='bx bxs-pie-chart-alt-2'></i>Food Banks</a></li>
             <li><a href="./organization_users.php"><i class='bx bxs-pie-chart-alt-2'></i>Users</a></li>
             <li><a href="./organization_signupusers.php"><i class='bx bxs-pie-chart-alt-2'></i>Create Users</a></li>
-            <li><a href="#"><i class='bx bxs-pie-chart-alt-2'></i>Donations History</a></li>
+            <li><a href="./organization_donationhistory.php"><i class='bx bxs-pie-chart-alt-2'></i>Donations History</a>
+            </li>
             <li><a href="./paymentgateway.php" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Donate now</a></li>
-            <li><a href="./connect-with-us.html" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Connect with us</a></li>
+            <li><a href="./connect-with-us.html" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Connect with
+                    us</a></li>
         </div>
     </section>
 
@@ -599,7 +649,7 @@ if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
             <div class="value_box">
                 <i class='bx bxs-user-detail'></i>
                 <div>
-                    <h3>8,720</h3>
+                    <h3><?php echo $donation_count ?></h3>
                     <span>No. of Donations</span>
                 </div>
             </div>
@@ -607,124 +657,30 @@ if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
             <div class="value_box">
                 <i class='bx bxs-user-detail'></i>
                 <div>
-                    <h3>$ 8,720</h3>
+                    <h3>$<?php echo $total_donations_received; ?></h3>
                     <span>Donations Received</span>
                 </div>
             </div>
         </div>
 
-        <dir class="board">
-            <table width="100%">
-                <thead>
-                    <tr>
-                        <td>First & Last Name</td>
-                        <td>Date of Birth</td>
-                        <td>City</td>
-                        <td>Zip Code</td>
-                        <td>Contact Number</td>
-                        <td>Email</td>
-                        <td>Gender</td>
-                        <td></td>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <tr>
-                        <td class="people">
-                            <img src="./images/banner.jpg" alt="">
-                            <div class="people-details">
-                                <p>Afraz</p>
-                                <p>Mishak</p>
-                            </div>
-                        </td>
-
-                        <td class="description">
-                            <p>29/06/2002</p>
-                        </td>
-
-                        <td class="description">
-                            <p>Wattala</p>
-                        </td>
-
-                        <td class="description">
-                            <p>11300</p>
-                        </td>
-
-                        <td class="description">
-                            <p>0760732923</p>
-                            <p>0760732923</p>
-                        </td>
-
-                        <td class="description">
-                            <p>afrazmishak@gmail.com</p>
-                        </td>
-
-                        <td class="description">
-                            <p>Male</p>
-                        </td>
-
-                        <!-- <td class="active">
-                            <p>Active</p>
-                        </td> -->
-
-                        <!-- <td class="role">
-                            <p>Owner</p>
-                        </td> -->
-
-                        <td class="edit">
-                            <a href="">View more</a>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="people">
-                            <img src="./images/banner.jpg" alt="">
-                            <div class="people-details">
-                                <p>Afraz</p>
-                                <p>Mishak</p>
-                            </div>
-                        </td>
-
-                        <td class="description">
-                            <p>29/06/2002</p>
-                        </td>
-
-                        <td class="description">
-                            <p>Wattala</p>
-                        </td>
-
-                        <td class="description">
-                            <p>11300</p>
-                        </td>
-
-                        <td class="description">
-                            <p>0760732923</p>
-                            <p>0760732923</p>
-                        </td>
-
-                        <td class="description">
-                            <p>afrazmishak@gmail.com</p>
-                        </td>
-
-                        <td class="description">
-                            <p>Male</p>
-                        </td>
-
-                        <!-- <td class="active">
-                            <p>Active</p>
-                        </td> -->
-
-                        <!-- <td class="role">
-                            <p>Owner</p>
-                        </td> -->
-
-                        <td class="edit">
-                            <a href="">View more</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </dir>
+        <div class="decorative-container">
+            <h2>About Our Organization</h2>
+            <p>Welcome to our organization's dashboard! Here's some information about what we do:</p>
+            <ul>
+                <li>We are dedicated to fighting hunger in our community by providing meals to those in need.</li>
+                <li>Our team of volunteers works tirelessly to collect donations, organize events, and distribute food
+                    to those who need it most.</li>
+                <li>Thanks to the generosity of donors like you, we've been able to make a positive impact on the lives
+                    of countless individuals and families.</li>
+                <li>We collaborate with local businesses, schools, and other organizations to raise awareness about food
+                    insecurity and support our mission.</li>
+                <li>In addition to providing food assistance, we offer educational programs and resources to empower
+                    individuals and families to achieve long-term food security.</li>
+                <li>We believe that everyone deserves access to nutritious food, and we're committed to creating a
+                    community where no one goes hungry.</li>
+            </ul>
+            <p>Together, we can make a difference!</p>
+        </div>
     </section>
 </body>
 <script>

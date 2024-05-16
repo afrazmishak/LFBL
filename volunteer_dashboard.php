@@ -83,10 +83,27 @@ $query_active_users = "SELECT COUNT(*) as active_user_count
 $result_active_users = mysqli_query($conn, $query_active_users);
 
 $active_volunteer_count = 0;
-
 if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
     $row_active_users = mysqli_fetch_assoc($result_active_users);
     $active_volunteer_count = $row_active_users['active_user_count'];
+}
+
+// Fetch the number of donations
+$donation_count = 0;
+$query_donation_count = "SELECT COUNT(*) as donation_count FROM donations";
+$result_donation_count = mysqli_query($conn, $query_donation_count);
+if ($result_donation_count && mysqli_num_rows($result_donation_count) > 0) {
+    $row_donation_count = mysqli_fetch_assoc($result_donation_count);
+    $donation_count = $row_donation_count['donation_count'];
+}
+
+// Fetch the total amount of donations received
+$total_donations_received = 0;
+$query_total_donations = "SELECT SUM(amount) as total_amount FROM donations";
+$result_total_donations = mysqli_query($conn, $query_total_donations);
+if ($result_total_donations && mysqli_num_rows($result_total_donations) > 0) {
+    $row_total_donations = mysqli_fetch_assoc($result_total_donations);
+    $total_donations_received = $row_total_donations['total_amount'];
 }
 ?>
 
@@ -265,20 +282,21 @@ if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
         .values {
             padding: 30px 30px 0 30px;
             display: flex;
-            justify-content: space-between;
+            justify-content: start;
             align-items: center;
             flex-wrap: wrap;
         }
 
         .values .value_box {
             background: #fff;
-            width: 230px;
+            width: auto;
             padding: 16px 20px;
             border-radius: 5px;
             display: flex;
             justify-content: flex-start;
             align-items: center;
             margin-bottom: 15px;
+            margin-right: 15px;
         }
 
         .values .value_box i {
@@ -592,7 +610,7 @@ if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
             <div class="value_box">
                 <i class='bx bxs-user-detail'></i>
                 <div>
-                    <h3>8,720</h3>
+                    <h3><?php echo $donation_count ?></h3>
                     <span>No. of Donations</span>
                 </div>
             </div>
@@ -600,7 +618,7 @@ if ($result_active_users && mysqli_num_rows($result_active_users) > 0) {
             <div class="value_box">
                 <i class='bx bxs-user-detail'></i>
                 <div>
-                    <h3>$ 8,720</h3>
+                    <h3>$<?php echo $total_donations_received; ?></h3>
                     <span>Donations Received</span>
                 </div>
             </div>

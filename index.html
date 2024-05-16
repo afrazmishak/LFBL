@@ -26,7 +26,7 @@
                             <a href="#programssection">Programs</a>
                         </li>
                         <li>
-                            <a href="Javascript:void(0);">Food Bank</a>
+                            <a href="./foodbankdetails.php" target="_blank">Food Bank</a>
                         </li>
                         <li>
                             <a href="#educationsection">Education</a>
@@ -45,7 +45,9 @@
         <div class="container">
             <h1>Together We Feed & <span>Save Lives</span></h1>
             <p><span>Welcome to LFBL</span>, your community's lifeline to combating hunger and nourishing hope. Our local food bank is dedicated to providing essential food assistance to those in need, fostering a spirit of togetherness and support. Join us in our mission to alleviate hunger and build a stronger, more resilient community. Together, we can make a difference, one meal at a time.</p>
-            <button>Start With A Little</button>
+            <a href="./paymentgateway.php" target="_blank">
+                <button>Start With A Little</button>
+            </a>
         </div>
     </div>
 
@@ -78,7 +80,7 @@
                     <p>
                         Explore our help materials to learn more about how you can support our local food bank's mission to combat hunger in our community. Whether you're seeking assistance, looking to donate, or interested in volunteering, our resources provide valuable information to get involved. From food distribution schedules to donation guidelines and volunteer opportunities, we're here to empower you to make a positive impact. Together, we can feed hope and nourish our community.
                     </p>
-                    <a href=""><button>Learn More</button></a>
+                    <a href="./help_materials.html"><button>Learn More</button></a>
                 </div>
             </div>
         </div>
@@ -92,29 +94,37 @@
                 <div class="box">
                     <div class="cardimage"></div>
                     <div class="programtitle">Daily Meals</div>
-                    <div class="donationcount">Donation Goal : <span>$10,5945</span></div>
-                    <button>Donate Now</button>
+                    <div class="donationcount">Donation Goal : <span>$10,500</span></div>
+                    <a href="./paymentgateway.php" target="_blank">
+                        <button>Donate Now</button>
+                    </a>
                 </div>
                 
                 <div class="box">
                     <div class="cardimage"></div>
                     <div class="programtitle">Shelter to cover</div>
-                    <div class="donationcount">Donation Goal : <span>$9845</span></div>
-                    <button>Donate Now</button>
+                    <div class="donationcount">Donation Goal : <span>$9800</span></div>
+                    <a href="./paymentgateway.php" target="_blank">
+                        <button>Donate Now</button>
+                    </a>
                 </div>
 
                 <div class="box">
                     <div class="cardimage"></div>
                     <div class="programtitle">Clean water for people</div>
-                    <div class="donationcount">Donation Goal : <span>$5859</span></div>
-                    <button>Donate Now</button>
+                    <div class="donationcount">Donation Goal : <span>$5900</span></div>
+                    <a href="./paymentgateway.php" target="_blank">
+                        <button>Donate Now</button>
+                    </a>
                 </div>
 
                 <div class="box">
                     <div class="cardimage"></div>
                     <div class="programtitle">Education to children</div>
-                    <div class="donationcount">Donation Goal : <span>$7443</span></div>
-                    <button>Donate Now</button>
+                    <div class="donationcount">Donation Goal : <span>$7500</span></div>
+                    <a href="./paymentgateway.php" target="_blank">
+                        <button>Donate Now</button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -134,8 +144,10 @@
                     Education Is Essential For <br>
                     <strong> BETTER FUTURE </strong>
                 </h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolor dignissimos exercitationem rem. Alias iste quaerat soluta molestias est impedit iusto dicta molestiae illum ipsum dolore quia sunt non, explicabo nulla.</p>
-                <button>EXPLORE NOW</button>
+                <p>Education is the cornerstone of progress, offering pathways to personal development and societal advancement. Investing in education ensures a brighter future, empowering individuals to innovate, adapt, and thrive in an ever-evolving world.</p>
+                <a href="./help_education.html" target="_blank">
+                    <button>EXPLORE NOW</button>
+                </a>
             </div>
         </div>
     </section>
@@ -191,10 +203,14 @@
     <section class="join" id="joinsection">
         <div class="container">
             <div class="jointitle">
-                ADOPT A CHILD & <span>SAVE LIVES</span>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fugit ratione voluptatum reiciendis amet similique recusandae officia suscipit cumque error excepturi? Odit molestiae ipsa sapiente minima maxime consequatur? Maxime, nesciunt eveniet?</p>
-                <button class="joinnow">JOIN US</button>
-                <button class="adoptbtn">ADOPT A CHILD</button>
+                DONATE A LITTLE & <span>SAVE LIVES</span>
+                <p>Donating even a small amount can have a profound impact on saving lives, whether it's providing essential medical care, clean water, or nutritious food to those in need. Your contribution, no matter how modest, can make a world of difference in alleviating suffering and improving the well-being of vulnerable individuals and communities.</p>
+                <a href="./become-volunteer.html">
+                    <button class="joinnow">JOIN US</button>
+                </a>
+                <a href="./paymentgateway.php" target="_blank">
+                    <button class="adoptbtn">DONATE</button>
+                </a>
             </div>
         </div>
     </section>
@@ -204,9 +220,9 @@
             <div class="newslettercontainer">
                 <img src="./images/Logo Files/For Web/png/White logo - no background.png" alt="">
                 <p>Stay informed and connected! Submit your email address to receive our latest newsfeeds and updates directly to your inbox. Be the first to know about upcoming events, important announcements, and community initiatives. Join our mailing list today and stay engaged with all that's happening.</p>
-                <form action="#">
+                <form action="#" method="post">
                     <input type="text" placeholder="Enter your email address">
-                    <button type="submit" id="feedbtn">Receive Newsfeeds and Updates</button>
+                    <button type="submit" id="feedbtn" name="submitReceive">Receive Newsfeeds and Updates</button>
                 </form>
 
             </div>

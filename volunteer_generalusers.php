@@ -553,7 +553,9 @@ $current_time = time(); // Get the current time in Unix timestamp
         <div class="items">
             <li><a href="./volunteer_dashboard.php"><i class='bx bxs-pie-chart-alt-2'></i>Home</a></li>
             <li><a href="./volunteer_generalusers.php"><i class='bx bxs-pie-chart-alt-2'></i>General Users</a></li>
-            <li><a href="./connect-with-us.html" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Connect with us</a></li>
+            <li><a href="./paymentgateway.php" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Donate now</a></li>
+            <li><a href="./connect-with-us.html" target="_blank"><i class='bx bxs-pie-chart-alt-2'></i>Connect with
+                    us</a></li>
         </div>
     </section>
 
